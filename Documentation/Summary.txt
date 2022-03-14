@@ -1,0 +1,9 @@
+Raspberry Pi config
+sudo apt-get update
+sudo apt-get update --allow-releaseinfo-change
+sudo apt-get install lighttpd (webserver)
+sudo apt-get -y install php7.3-common php7.3-cgi php7.3
+
+sudo lighty-enable-mod fastcgi-php
+sudo service lighttpd force-reload
+
