@@ -1,7 +1,11 @@
-#include <ESP8266WiFi.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
 #include <ESP8266HTTPClient.h>
+
+#define USE_SERIAL Serial
+ESP8266WiFiMulti WiFiMulti;
 
 // GPIO where the DS18B20 is connected to
 const int oneWireBus = 4;     
@@ -43,6 +47,36 @@ void loop() {
   float temperatureC = sensors.getTempCByIndex(0);
   Serial.print(temperatureC);
   Serial.println("ºC");
-  delay(5000);
+  String convertTemp = "";
+  convertTemp.concat(temperatureC);
+  
+  HTTPClient http;
+  
+  USE_SERIAL.print("[HTTP] begin...\n");
+  // configure traged server and url
+  http.begin("http://10.0.0.6/test.php?ipsrc=Office&temperature="+ convertTemp + "&humidity=1&voltage=1"); //HTTP
+ 
+  USE_SERIAL.print("[HTTP] GET...\n");
+  // start connection and send HTTP header
+  int httpCode = http.GET();
+ 
+    // httpCode will be negative on error
+    if(httpCode > 0) {
+        // HTTP header has been send and Server response header has been handled
+        USE_SERIAL.printf("[HTTP] GET... code: %d\n", httpCode);
+ 
+        // file found at server
+        if(httpCode == HTTP_CODE_OK) {
+            String payload = http.getString();
+            USE_SERIAL.println(payload);
+        }
+    } else {
+        USE_SERIAL.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
+    }
+ 
+    http.end();
+    delay(60000);   // wait a minute
+  
+  
 
 }
