@@ -3,7 +3,7 @@ data_log = open('/var/www/html/order.csv','r')
 lines = data_log.readlines()
 data_log.close()
  
-sensor_qty = 3     # how many sensor lines to read in from log
+sensor_qty = 1     # how many sensor lines to read in from log
  
 html_string = '<html>\n<body>\n<style>\ntable { \n  border-spacing: 10px;\n'
 html_string += '  border-collapse: separate;\n}\n</style>\n'

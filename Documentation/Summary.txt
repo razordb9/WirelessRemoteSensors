@@ -7,3 +7,31 @@ sudo apt-get -y install php7.3-common php7.3-cgi php7.3
 sudo lighty-enable-mod fastcgi-php
 sudo service lighttpd force-reload
 
+sudo chown www-data:www-data /var/www
+sudo chown www-data:www-data /var/www/html
+sudo chmod 775 /var/www permission to write to this directory
+sudo usermod -a -G www-data pi add “pi” user to the “www-data” group
+sudo reboot
+
+sudo chmod 755 test.php make your file executable
+sudo chown www-data:www-data /var/www/html/test.php
+
+sudo chown www-data:www-data order.csv
+sudo chown www-data:www-data /var/www/html
+
+sudo touch /var/www/html/temps.html
+sudo chmod 775 /var/www/html/temps.html
+sudo chown www-data:www-data /var/www/html/temps.html
+
+chmod 755 /home/pi/temperatures.py, then check that it works (once you have some data in /var/www/html/order.csv )…
+
+python3 /home/pi/temperatures.py
+
+crontab -e
+* * * * * /usr/bin/python /home/pi/temperatures.py
+
+Install MySQL on Raspberry Pi 
+https://pimylifeup.com/raspberry-pi-mysql/
+sudo apt install mariadb-server
+
+CREATE DATABASE SENSORS;
