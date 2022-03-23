@@ -1,9 +1,15 @@
+Hardware used:
+Raspberry Pi b+
+Wemos d1 mini pro
+DS18S20
+
+
 Raspberry Pi config
 sudo apt-get update
 sudo apt-get update --allow-releaseinfo-change
 sudo apt-get install lighttpd (webserver)
 sudo apt-get -y install php7.3-common php7.3-cgi php7.3
-
+sudo apt-get install python-mysqldb
 sudo lighty-enable-mod fastcgi-php
 sudo service lighttpd force-reload
 
@@ -25,10 +31,14 @@ sudo chown www-data:www-data /var/www/html/temps.html
 
 chmod 755 /home/pi/temperatures.py, then check that it works (once you have some data in /var/www/html/order.csv )…
 
+sudo python3 -m pip install mysqlclient
+
 python3 /home/pi/temperatures.py
 
 crontab -e
 * * * * * /usr/bin/python /home/pi/temperatures.py
+
+cat /var/log/syslog | grep cron
 
 Install MySQL on Raspberry Pi 
 https://pimylifeup.com/raspberry-pi-mysql/
