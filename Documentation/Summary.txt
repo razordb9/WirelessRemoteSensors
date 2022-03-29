@@ -32,6 +32,7 @@ sudo chown www-data:www-data /var/www/html/temps.html
 chmod 755 /home/pi/temperatures.py, then check that it works (once you have some data in /var/www/html/order.csv )…
 
 sudo python3 -m pip install mysqlclient
+sudo pip3 install mysql-connector
 
 python3 /home/pi/temperatures.py
 
@@ -45,3 +46,10 @@ https://pimylifeup.com/raspberry-pi-mysql/
 sudo apt install mariadb-server
 
 CREATE DATABASE SENSORS;
+
+CREATE TABLE metrics(
+id int(50) not null auto_increment primary key,
+location VARCHAR(255),
+temp DECIMAL(4,2),
+datum char(8),
+time char(8));

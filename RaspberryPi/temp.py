@@ -1,32 +1,44 @@
 #!/usr/bin/python
-import MySQLdb
 import sys
+import mysql.connector
 
-def db_connect():
-    global cur
-    global con
-    con = MySQLdb.connect(host="localhost", user="root", password="")
-    cur = con.cursor()
-    cur.execute("USE SENSORS;")
-
-def write_data():
-    data_log = open('/var/www/html/order.csv','r') 
+def db_connect(hostname, username, password, dbName):
+    global mycursor
+    global mydb
+      
+    mydb = mysql.connector.connect (
+        host = hostname,
+        user = username,
+        password = password,
+        database = dbName
+    )
+    mycursor = mydb.cursor()
+    
+def write_data(filepath, fileoperation):
+    data_log = open(filepath, fileoperation) 
     lines = data_log.readlines()
     data_log.close()
     sensor_qty = 1 
     for x in range(-sensor_qty, 0, 1):
         line = lines[x].split(',')
         print(lines[x])
-        v1 = line[0]
+        location = line[0]
         print(line[0])
-        v2 = line[1]
+        temp = line[1]
         print(line[1])
-        v3 = line[4]
+        datum = line[4]
         print(line[4])
-        v4 = line[5]
+        timeOfFile = line[5]
         print(line[5])
-        cur.execute("INSERT INTO metrics (location, temp, datum, time) VALUES (%s, %s, %s, %s)", (v1, v2, v3, v4))
-        con.commit();
-        
-db_connect()
-write_data()
+        mycursor.execute("select time from metrics order by id desc limit 1")  
+        timeOfDB = mycursor.fetchall()
+        print(timeOfDB)
+        if(timeOfFile != timeOfDB):
+            sql = "INSERT INTO metrics (location, temp, datum, time) VALUES (%s, %s, %s, %s)"
+            values = (location, temp, datum, timeOfFile)
+            mycursor.execute(sql,values)
+            mydb.commit();
+
+#password needed to be added 
+db_connect('localhost', 'root', PasswordNeeded, 'SENSORS')
+write_data('/var/www/html/order.csv','r')
