@@ -54,8 +54,6 @@ def write_data(filepath, fileoperation):
             values = (location, temp, datum, timeOfFile)
             mycursor.execute(sql,values)
             mydb.commit();
-            
-
 
 if __name__ == "__main__":
     LOG_FORMAT ="%(levelname)s %(asctime)s - %(message)s"
@@ -64,6 +62,6 @@ if __name__ == "__main__":
                             level= logging.DEBUG)
     logger = logging.getLogger()
     logger.info('########## Start Logging ##########')
-    db_connect('localhost', 'root', 'yj_fb9-ePI', 'SENSORS')
+    db_connect('localhost', 'root', '', 'SENSORS')
     write_data('/var/www/html/order.csv','r')
     logger.info('########## Logging finished ##########')

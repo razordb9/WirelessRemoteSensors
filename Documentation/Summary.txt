@@ -13,6 +13,21 @@ sudo apt-get install python-mysqldb
 sudo lighty-enable-mod fastcgi-php
 sudo service lighttpd force-reload
 
+Running Flask on Raspberry Pi
+https://singleboardbytes.com/1002/running-flask-nginx-raspberry-pi.htm
+
+1. apt-get update
+2. apt-get upgrade
+3. sudo apt-get install nginx
+4. sudo apt-get install python3-pip
+5. sudo pip install flask
+6. sudo apt-get install build-essential python-dev
+7. sudo pip3 install flask uwsgi
+8. uwsgi --socket 0.0.0.0:8000 --protocol=http -w fossapp:app
+9. create uwsgi ini file
+10. uwsgi --ini uwsgi.ini
+
+
 sudo chown www-data:www-data /var/www
 sudo chown www-data:www-data /var/www/html
 sudo chmod 775 /var/www permission to write to this directory
@@ -40,6 +55,8 @@ crontab -e
 * * * * * /usr/bin/python /home/pi/temperatures.py
 
 cat /var/log/syslog | grep cron
+tail /var/log/cron.log
+
 
 Install MySQL on Raspberry Pi 
 https://pimylifeup.com/raspberry-pi-mysql/
