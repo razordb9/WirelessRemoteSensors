@@ -3,16 +3,25 @@ Raspberry Pi b+
 Wemos d1 mini pro
 DS18S20
 
+Wemos d1 mini pro config:
+https://arduino-esp8266.readthedocs.io/en/latest/
+-install ESP8266 v3.0.2 via Boardmanager
+-choose "Generic ESP8266 module"
+
+
+
 
 Raspberry Pi config
 sudo apt-get update
 sudo apt-get update --allow-releaseinfo-change
 sudo apt-get install lighttpd (webserver)
 sudo apt-get -y install php7.3-common php7.3-cgi php7.3
+sudo apt-get install php7.3-mysql
 sudo apt-get install python-mysqldb
 sudo lighty-enable-mod fastcgi-php
 sudo service lighttpd force-reload
 
+Needs to be tested on a different Raspberry Pi to avoid damage on the current test system
 Running Flask on Raspberry Pi
 https://singleboardbytes.com/1002/running-flask-nginx-raspberry-pi.htm
 
