@@ -1,60 +1,68 @@
+/*
+    DS18B20 Basic Code
+    Temperatur auslesen mit einem DS18B20 Temperaturfühlers
+    Created by Thomas Zaußnig, 2022
+*/
+
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
 #include <ESP8266HTTPClient.h>
+#include <WiFiClient.h>
 
+// Der PIN D2 (GPIO 4) wird als BUS-Pin verwendet
+#define ONE_WIRE_BUS 4
 #define USE_SERIAL Serial
-ESP8266WiFiMulti WiFiMulti;
 
-// GPIO where the DS18B20 is connected to
-const int oneWireBus = 4;     
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature DS18B20(&oneWire);
+WiFiClient wifiClient;
 
-// Setup a oneWire instance to communicate with any OneWire devices
-OneWire oneWire(oneWireBus);
-
-// Pass our oneWire reference to Dallas Temperature sensor 
-DallasTemperature sensors(&oneWire);
-
+// In dieser Variable wird die Temperatur gespeichert
+float temperature;
 const char* ssid = "A1-2453B3";
 const char* password = "QAYPLNA6P6";
 
-void setup() {
-  Serial.begin(115200);
-  sensors.begin();
-  delay(1000);
+void setup(){
+  USE_SERIAL.begin(115200);
 
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
+  // DS18B20 initialisieren
+  DS18B20.begin();
+  
+  USE_SERIAL.print("Connecting to ");
+  USE_SERIAL.println(ssid);
   WiFi.hostname("Name");
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    USE_SERIAL.print(".");
   }
-  Serial.println("");
-  Serial.println("WiFi connected");
+  USE_SERIAL.println("");
+  USE_SERIAL.println("WiFi connected");
 
-  Serial.print("IP Adress: ");
-  Serial.println(WiFi.localIP());
-  Serial.print("MAC Address: ");
-  Serial.println(WiFi.macAddress());
+  USE_SERIAL.print("IP Adress: ");
+  USE_SERIAL.println(WiFi.localIP());
+  USE_SERIAL.print("MAC Address: ");
+  USE_SERIAL.println(WiFi.macAddress());
 }
 
-void loop() {
-  sensors.requestTemperatures(); 
-  float temperatureC = sensors.getTempCByIndex(0);
-  Serial.print(temperatureC);
-  Serial.println("ºC");
-  String convertTemp = "";
-  convertTemp.concat(temperatureC);
+void loop(){
   
+  DS18B20.requestTemperatures();
+  temperature = DS18B20.getTempCByIndex(0);
+
+  // Ausgabe im seriellen Monitor
+  USE_SERIAL.println(String(temperature) + " °C");
+
+  // 5 Sekunden warten
+  delay(5000);
+
   HTTPClient http;
   
   USE_SERIAL.print("[HTTP] begin...\n");
   // configure traged server and url
-  http.begin("http://10.0.0.6/test.php?ipsrc=Office&temperature="+ convertTemp + "&humidity=1&voltage=1"); //HTTP
+  http.begin(wifiClient, "http://10.0.0.6/test.php?ipsrc=Office&temperature="+ String(temperature) + "&humidity=1&voltage=1"); //HTTP
  
   USE_SERIAL.print("[HTTP] GET...\n");
   // start connection and send HTTP header
@@ -73,10 +81,6 @@ void loop() {
     } else {
         USE_SERIAL.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
     }
- 
     http.end();
-    delay(60000);   // wait a minute
-  
-  
-
+    delay(60000);
 }
