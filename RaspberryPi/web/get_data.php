@@ -14,18 +14,30 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, temp, datum, time FROM metrics order by id desc limit 10";
+//$sql = "SELECT id, location, temp, datum, time FROM metrics order by id desc limit 10";
+$sql = 'SELECT id, temp, datum, time FROM metrics order by id desc limit 50';
+
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    echo "id: " . $row["id"]. " - Temperatur: " . $row["temp"]. " Datum: " . $row["datum"]. " Uhrzeit: " . $row["time"]. "<br>";
-  }
-} else {
-  echo "0 results";
+$rows = array();
+$table = array();
+
+
+$table['cols'] = array(
+  array('label' => 'Date time', 'type' => 'string'),
+  array('label' => 'Temperatur', 'type' => 'number'),
+);
+
+while($row = $result->fetch_assoc()) {
+  $sub_array = array();
+  $sub_array[] = array('v' => $row['datum'] . ' ' . $row['time']);
+  $sub_array[] = array('v' => $row['temp']);
+  $rows[] = array('c' => $sub_array);
 }
-$conn->close();
+
+$table['rows'] = $rows;
+$jsonTable = json_encode($table);
+echo $jsonTable;
 
 ?>
 

@@ -63,6 +63,9 @@ python3 /home/pi/temperatures.py
 crontab -e
 * * * * * /usr/bin/python /home/pi/temperatures.py
 
+IMPORTANT LOGFILES
+##########################
+cat /var/log/lighttpd/error.log -> PHP logging errors
 cat /var/log/syslog | grep cron
 tail /var/log/cron.log
 
