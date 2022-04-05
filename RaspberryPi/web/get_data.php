@@ -3,19 +3,18 @@
 
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "yj_fb9-ePI";
 $dbname = "SENSORS";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
 
+// Check connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-//$sql = "SELECT id, location, temp, datum, time FROM metrics order by id desc limit 10";
-$sql = 'SELECT id, temp, datum, time FROM metrics order by id desc limit 50';
+$sql = 'select id, temp, datum, time from (select id, temp, datum, time from metrics order by id desc limit 50) sub order by id asc';
 
 $result = $conn->query($sql);
 
@@ -40,4 +39,3 @@ $jsonTable = json_encode($table);
 echo $jsonTable;
 
 ?>
-

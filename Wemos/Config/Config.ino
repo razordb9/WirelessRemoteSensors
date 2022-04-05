@@ -23,7 +23,9 @@ float temperature;
 const char* ssid = "A1-2453B3";
 const char* password = "QAYPLNA6P6";
 
-void setup(){
+
+
+void setup() {
   USE_SERIAL.begin(115200);
 
   // DS18B20 initialisieren
@@ -47,23 +49,18 @@ void setup(){
   USE_SERIAL.println(WiFi.macAddress());
 }
 
-void loop(){
-  
+void loop() {
   DS18B20.requestTemperatures();
   temperature = DS18B20.getTempCByIndex(0);
-
+  
   // Ausgabe im seriellen Monitor
   USE_SERIAL.println(String(temperature) + " °C");
-
-  // 5 Sekunden warten
-  delay(5000);
-
-  HTTPClient http;
   
-  USE_SERIAL.print("[HTTP] begin...\n");
-  // configure traged server and url
-  http.begin(wifiClient, "http://10.0.0.6/test.php?ipsrc=Office&temperature="+ String(temperature) + "&humidity=1&voltage=1"); //HTTP
- 
+  String url = "http://10.0.0.6/test.php?ipsrc=Office&temperature="+ String(temperature) + "&humidity=1&voltage=1";
+  USE_SERIAL.println(url);
+  HTTPClient http;
+
+  http.begin(wifiClient, url); //HTTP
   USE_SERIAL.print("[HTTP] GET...\n");
   // start connection and send HTTP header
   int httpCode = http.GET();
@@ -81,6 +78,8 @@ void loop(){
     } else {
         USE_SERIAL.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
     }
+ 
     http.end();
-    delay(60000);
+    delay(300000);   // wait a minute
+    
 }

@@ -54,7 +54,7 @@ void loop() {
   
   USE_SERIAL.print("[HTTP] begin...\n");
   // configure traged server and url
-  http.begin("http://10.0.0.6/test.php?ipsrc=Office&temperature="+ convertTemp + "&humidity=1&voltage=1"); //HTTP
+  http.begin(WiFiClient, "http://10.0.0.6/test.php?ipsrc=Office&temperature="+ convertTemp + "&humidity=1&voltage=1"); //HTTP
  
   USE_SERIAL.print("[HTTP] GET...\n");
   // start connection and send HTTP header

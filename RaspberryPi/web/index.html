@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <script
@@ -6,15 +7,15 @@
     ></script>
     <script
       type="text/javascript"
-      src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"
-    ></script>
+      src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+    </script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart()
       {
         var chartData = $.ajax({
-          url: "test_php.php",
+          url: "get_data.php",
           dataType: "json",
           async: false
         }).responseText;
@@ -22,6 +23,10 @@
         var options = {
           title: "Last 50 temperature values",
           pointSize: 10,
+          titlePosition: "none",
+          legend: {
+            position: "none"
+          }
         }
 
         var data = new google.visualization.DataTable(chartData);
@@ -29,11 +34,58 @@
 
         chart.draw(data, options);
       }
+      
+      var expanded = false;
+
+      function showCheckboxes() {
+        var checkboxes = document.getElementById("checkboxes");
+        if (!expanded) {
+          checkboxes.style.display = "block";
+          expanded = true;
+        } else {
+          checkboxes.style.display = "none";
+          expanded = false;
+        }
+      }
     </script>
     <style>
       .page-wrapper {
         width: 1000px;
         margin: 0 auto;
+      }
+      .multiselect {
+        width: 200px;
+      }
+
+      .selectBox {
+        position: relative;
+      }
+
+      .selectBox select {
+        width: 100%;
+      }
+
+      .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+      }
+      .line_chart_header{
+        text-align: center;
+      }
+      #checkboxes {
+        display: none;
+        border: 1px #dadada solid;
+      }
+
+      #checkboxes label {
+        display: block;
+      }
+
+      #checkboxes label:hover {
+        background-color: #1e90ff;
       }
     </style>
   </head>
@@ -41,6 +93,19 @@
     <div class="page-wrapper">
       <br />
       <h2 align="center">Weatherstation powered by PCMiT</h2>
+      <div style="text-align: center;">
+        <label for="start">Start date:</label>
+
+        <input type="date" id="datepicker" name="datepicker">
+        <button>Submit</button>
+        <br>
+      </div>
+      <br>
+
+      <br>    
+      <div class="line_chart_header">
+        <h2>Latest 50 temperature values</h2>
+      </div>
       <div id="line_chart" style="width: 100%; height: 500px"></div>
     </div>
   </body>
