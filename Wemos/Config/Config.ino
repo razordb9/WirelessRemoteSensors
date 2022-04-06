@@ -52,7 +52,8 @@ void setup() {
 void loop() {
   DS18B20.requestTemperatures();
   temperature = DS18B20.getTempCByIndex(0);
-  
+
+  char
   // Ausgabe im seriellen Monitor
   USE_SERIAL.println(String(temperature) + " °C");
   
