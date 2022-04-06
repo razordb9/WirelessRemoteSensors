@@ -3,15 +3,17 @@ google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
     var gaugeData = $.ajax({
-        url: "get_data.php",
+        url: "get_data.php?Query=1&Title=Office&Sensor=temp",
         dataType: "json",
         async: false
     }).responseText;
 
     var options = {
         width: 400, height: 120,
-        redFrom: 90, redTo: 100,
-        yellowFrom:75, yellowTo: 90,
+        min: -20, max:50,
+        greenFrom: 15, greenTo: 29,
+        redFrom: 40, redTo: 50,
+        yellowFrom:30, yellowTo: 40,
         minorTicks: 5
     }
 
