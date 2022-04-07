@@ -8,10 +8,6 @@ function drawTable(){
         async: false
     }).responseText;
 
-    var options ={
-        width: '100%'
-    }
-
     var data = new google.visualization.DataTable(tableData);
     var table = new google.visualization.Table(document.getElementById('chart_table'));
 
