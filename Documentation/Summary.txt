@@ -82,3 +82,7 @@ location VARCHAR(255),
 temp DECIMAL(4,2),
 datum char(8),
 time char(8));
+
+BACKUP DATABASE
+Create a bash script to get all databases and only backup the necessary one.
+A cron job will run the script once a day and keep the data for 7 days.
