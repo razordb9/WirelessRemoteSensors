@@ -55,7 +55,7 @@ void loop() {
   // Ausgabe im seriellen Monitor
   USE_SERIAL.println(String(temperature) + " °C");
   
-  String url = "http://10.0.0.6/test.php?ipsrc=Office&temperature="+ String(temperature) + "&humidity=1&voltage=1";
+  String url = "http://10.0.0.6/test.php?ipsrc=Cellar&temperature="+ String(temperature) + "&humidity=1&voltage=1";
   USE_SERIAL.println(url);
   HTTPClient http;
 
