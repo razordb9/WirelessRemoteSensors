@@ -3,6 +3,10 @@ Raspberry Pi b+
 Wemos d1 mini pro
 DS18S20
 
+Visual Studio git config
+git config --global user.email "email@example.com"
+git config --global user.name anyusername
+
 Wemos d1 mini pro config:
 https://arduino-esp8266.readthedocs.io/en/latest/
 -install ESP8266 v3.0.2 via Boardmanager
